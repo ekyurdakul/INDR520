@@ -1,6 +1,6 @@
 #include "Dijkstra.h"
 
-void Dijkstra::Original(vector<int> V, vector< tuple<int,int,float> > E, int source)
+void Dijkstra::OriginalAlgorithm(vector<int> V, vector< tuple<int,int,float> > E, int source)
 {
     vector<int> vertexSet = {};
     vector<float> distance = {};
@@ -73,7 +73,7 @@ void Dijkstra::Original(vector<int> V, vector< tuple<int,int,float> > E, int sou
     cout << endl;
 }
 
-void Dijkstra::Modified(vector<int> V, vector< tuple<int,int,float> > E, int source)
+void Dijkstra::ModifiedAlgorithm(vector<int> V, vector< tuple<int,int,float> > E, int source)
 {
-
+    
 }
