@@ -3,13 +3,16 @@
 int main()
 {
     vector<int> V = {0,1,2};
-    vector< tuple<int,int,float> > E = 
+    vector<vector<float> > E = 
     {
-        //<src,dest,weight>
-        make_tuple(0,1,5.0f),
-        make_tuple(1,2,8.0f),
+        {0.0f,5.0f,INFINITY},
+        {INFINITY,0.0f,8.0f},
+        {INFINITY,INFINITY,0.0f},
     };
+    cout << "Original Algorithm:" << endl;
     Dijkstra::OriginalAlgorithm(V,E,0);
+    cout << endl << "Modified Algorithm:" << endl;
+    Dijkstra::ModifiedAlgorithm(V,E,0);
 
     return 0;
 }
