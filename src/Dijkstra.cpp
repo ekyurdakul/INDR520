@@ -56,7 +56,7 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
         if (currentVertex != source)
         {
             distance[i] = INFINITY;
-            previous[i] = -1;
+            previous[i] = 0;
         }
         else
             distance[i] = 0.0f;
