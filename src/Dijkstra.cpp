@@ -43,23 +43,14 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
 
 void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<unsigned int>& previous)
 {
-    distance = vector<float>(V.size());
-    previous = vector<unsigned int>(V.size());
+    distance = vector<float>(V.size(),INFINITY);
+    previous = vector<unsigned int>(V.size(),0);
     priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;
-    
-    for (unsigned int i = 0; i < V.size(); i++)
-    {        
-        auto& currentVertex = V[i];
-        if (currentVertex != source)
-        {
-            distance[i] = INFINITY;
-            previous[i] = 0;
-        }
-        else
-            distance[i] = 0.0f;
 
-        vertexSet.push(make_pair(currentVertex,distance[currentVertex]));
-    }
+    distance[source] = 0.0f;
+    
+    for (auto& item : V)
+        vertexSet.push(make_pair(item,distance[item]));
  
     while (!vertexSet.empty())
     {
