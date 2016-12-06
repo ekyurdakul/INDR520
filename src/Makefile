@@ -1,13 +1,13 @@
 OBJECTS = Dijkstra.o main.o
-EXECS = main
+EXEC = main
 
-all: $(EXECS)
+all: $(EXEC)
 
 %.o: %.cpp
 	g++ -std=c++14 -Wall -O3 -c -o $@ $^
 
-$(EXECS): $(OBJECTS)
+$(EXEC): $(OBJECTS)
 	g++ -std=c++14 -Wall -O3 -o $@ $^
 
 clean:
-	-rm *.o $(EXECS)
+	-rm *.o $(EXEC)
