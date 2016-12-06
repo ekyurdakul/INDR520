@@ -1,10 +1,8 @@
 #include "Dijkstra.h"
 
-void Dijkstra::OriginalAlgorithm(vector<int> V, vector<vector<float> > E, int source)
+void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int source, vector<float>& distance, vector<unsigned int>& previous)
 {
     vector<int> vertexSet = {};
-    vector<float> distance = {};
-    vector<int> previous = {};
     
     for (unsigned int i = 0; i < V.size(); i++)
     {
@@ -42,38 +40,13 @@ void Dijkstra::OriginalAlgorithm(vector<int> V, vector<vector<float> > E, int so
             }  
         }
     }
-
-    cout << "Distance: ";
-    for (unsigned int i = 0; i < distance.size(); i++)
-        cout << distance[i] << " ";
-    cout << endl;
-
-    cout << "Previous: ";
-    for (unsigned int i = 0; i < previous.size(); i++)
-        cout << previous[i] << " ";
-    cout << endl;
-
-    list<int> path = {};
-    unsigned int target = 2;
-    cout << "Path from " << source << " to " << target << " : ";
-
-    while (target > 0 && target < V.size())
-    {
-        path.push_front(target);
-        target = previous[target];
-    }
-    path.push_front(target);
-
-    for (auto& item : path)
-        cout << item << " ";
-    cout << endl;
 }
 
-void Dijkstra::ModifiedAlgorithm(vector<int> V, vector<vector<float> > E, int source)
+void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int source, vector<float>& distance, vector<unsigned int>& previous)
 {
-    vector<float> distance = vector<float>(V.size());
-    vector<int> previous = vector<int>(V.size());
-    priority_queue<pair<int,float>, vector<pair<int,float>>, greater<pair<int,float> > > vertexSet;
+    distance = vector<float>(V.size());
+    previous = vector<unsigned int>(V.size());
+    priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;
     
     for (unsigned int i = 0; i < V.size(); i++)
     {        
@@ -94,7 +67,7 @@ void Dijkstra::ModifiedAlgorithm(vector<int> V, vector<vector<float> > E, int so
         auto vertex = vertexSet.top();
         vertexSet.pop();
 
-        int v = get<0>(vertex);
+        unsigned int v = get<0>(vertex);
 
         for (unsigned int i = 0; i < V.size(); i++)
         {
@@ -112,26 +85,20 @@ void Dijkstra::ModifiedAlgorithm(vector<int> V, vector<vector<float> > E, int so
         }
     }
 
-    cout << "Distance: ";
-    for (unsigned int i = 0; i < distance.size(); i++)
-        cout << distance[i] << " ";
-    cout << endl;
+    
+}
 
-    cout << "Previous: ";
-    for (unsigned int i = 0; i < previous.size(); i++)
-        cout << previous[i] << " ";
-    cout << endl;
+void Dijkstra::FindPath(const vector<float>& distance, const vector<unsigned int>& previous, const unsigned int target, list<unsigned int>& path)
+{
+    cout << "Path to node " << target << " : ";
 
-    list<int> path = {};
-    unsigned int target = 2;
-    cout << "Path from " << source << " to " << target << " : ";
-
-    while (target > 0 && target < V.size())
+    unsigned int currentTarget = target;
+    while (currentTarget > 0 && currentTarget < distance.size())
     {
-        path.push_front(target);
-        target = previous[target];
+        path.push_front(currentTarget);
+        currentTarget = previous[currentTarget];
     }
-    path.push_front(target);
+    path.push_front(currentTarget);
 
     for (auto& item : path)
         cout << item << " ";
