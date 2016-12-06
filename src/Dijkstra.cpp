@@ -2,16 +2,13 @@
 
 void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<unsigned int>& previous)
 {
-    distance = {};
-    previous = {};
+    distance = vector<float>(V.size(),INFINITY);
+    previous = vector<unsigned int>(V.size(),0);
     vector<unsigned int> vertexSet = {};
     
     for (auto& item : V)
-    {
         vertexSet.push_back(item);
-        previous.push_back(0);
-        distance.push_back(INFINITY);
-    }
+    
     distance[source] = 0.0f;
     
     while (!vertexSet.empty())
