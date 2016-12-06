@@ -104,3 +104,16 @@ void Dijkstra::FindPath(const vector<float>& distance, const vector<unsigned int
         cout << item << " ";
     cout << endl;
 }
+
+void Dijkstra::PrintResults(const vector<float>& distance, const vector<unsigned int>& previous, const list<unsigned int>& path)
+{
+    cout << "Distance: ";
+    for (unsigned int i = 0; i < distance.size(); i++)
+        cout << distance[i] << " ";
+    cout << endl;
+
+    cout << "Previous: ";
+    for (unsigned int i = 0; i < previous.size(); i++)
+        cout << previous[i] << " ";
+    cout << endl;
+}
