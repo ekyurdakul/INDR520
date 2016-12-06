@@ -14,7 +14,7 @@ int main()
     const unsigned int target = 2;
     //Outputs
     vector<float> distance;
-    vector<unsigned int> previous;
+    vector<int> previous;
     list<unsigned int> path;
 
 

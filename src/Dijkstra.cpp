@@ -1,9 +1,9 @@
 #include "Dijkstra.h"
 
-void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<unsigned int>& previous)
+void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous)
 {
     distance = vector<float>(V.size(),INFINITY);
-    previous = vector<unsigned int>(V.size(),0);
+    previous = vector<int>(V.size(),-1);
     vector<unsigned int> vertexSet = {};
     
     for (auto& item : V)
@@ -41,10 +41,10 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
     }
 }
 
-void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<unsigned int>& previous)
+void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous)
 {
     distance = vector<float>(V.size(),INFINITY);
-    previous = vector<unsigned int>(V.size(),0);
+    previous = vector<int>(V.size(),-1);
     priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;
 
     distance[source] = 0.0f;
@@ -74,12 +74,12 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
     }    
 }
 
-void Dijkstra::FindPath(const vector<float>& distance, const vector<unsigned int>& previous, const unsigned int& target, list<unsigned int>& path)
+void Dijkstra::FindPath(const vector<float>& distance, const vector<int>& previous, const unsigned int& target, list<unsigned int>& path)
 {
     path = {};
 
     unsigned int currentTarget = target;
-    while (currentTarget > 0 && currentTarget < distance.size())
+    while (previous[currentTarget] != -1)
     {
         path.push_front(currentTarget);
         currentTarget = previous[currentTarget];
@@ -87,7 +87,7 @@ void Dijkstra::FindPath(const vector<float>& distance, const vector<unsigned int
     path.push_front(currentTarget);
 }
 
-void Dijkstra::PrintResults(const vector<float>& distance, const vector<unsigned int>& previous, const list<unsigned int>& path, const unsigned int& source, const unsigned int& target)
+void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& previous, const list<unsigned int>& path, const unsigned int& source, const unsigned int& target)
 {
     cout << "Distance: ";
     for (auto& item : distance)
