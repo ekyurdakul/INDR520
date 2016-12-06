@@ -2,24 +2,33 @@
 
 int main()
 {
-    vector<unsigned int> V = {0,1,2};
-    vector<vector<float> > E = 
+    //Inputs
+    const vector<unsigned int> V = {0,1,2};
+    const vector<vector<float>> E = 
     {
         {0.0f,5.0f,INFINITY},
         {INFINITY,0.0f,8.0f},
         {INFINITY,INFINITY,0.0f},
     };
+    const unsigned int source = 0;
+    const unsigned int target = 2;
+    //Outputs
+    vector<float> distance;
+    vector<unsigned int> previous;
+    list<unsigned int> path;
+
 
     cout << "Original Algorithm:" << endl;
-    vector<float> distance = vector<float>();
-    vector<unsigned int> previous = vector<unsigned int>();
-    list<unsigned int> path = {};
+    Dijkstra::OriginalAlgorithm(V,E,source,distance,previous);
+    Dijkstra::FindPath(distance,previous,target,path);
+    Dijkstra::PrintResults(distance,previous,path,source,target);
 
-    Dijkstra::OriginalAlgorithm(V,E,0,distance,previous);
-    Dijkstra::FindPath(distance,previous,2,path);
-    Dijkstra::PrintResults(distance,previous,path);
+    cout << "*******************" << endl;
 
-    //void ModifiedAlgorithm
+    cout << "Modified Algorithm:" << endl;
+    Dijkstra::ModifiedAlgorithm(V,E,source,distance,previous);
+    Dijkstra::FindPath(distance,previous,target,path);
+    Dijkstra::PrintResults(distance,previous,path,source,target);
 
     return 0;
 }
