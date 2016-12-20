@@ -105,3 +105,16 @@ void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& pr
         cout << item << " ";
     cout << endl;
 }
+
+void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, const vector<vector<float>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
+{
+    cout << "Original Algorithm:" << endl;
+    OriginalAlgorithm(V,E,source,distance,previous);
+    FindPath(distance,previous,target,path);
+    PrintResults(distance,previous,path,source,target);
+    cout << "*******************" << endl;
+    cout << "Modified Algorithm:" << endl;
+    ModifiedAlgorithm(V,E,source,distance,previous);
+    FindPath(distance,previous,target,path);
+    PrintResults(distance,previous,path,source,target);
+}

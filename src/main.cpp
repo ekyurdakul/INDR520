@@ -17,18 +17,7 @@ int main()
     vector<int> previous;
     list<unsigned int> path;
 
-
-    cout << "Original Algorithm:" << endl;
-    Dijkstra::OriginalAlgorithm(V,E,source,distance,previous);
-    Dijkstra::FindPath(distance,previous,target,path);
-    Dijkstra::PrintResults(distance,previous,path,source,target);
-
-    cout << "*******************" << endl;
-
-    cout << "Modified Algorithm:" << endl;
-    Dijkstra::ModifiedAlgorithm(V,E,source,distance,previous);
-    Dijkstra::FindPath(distance,previous,target,path);
-    Dijkstra::PrintResults(distance,previous,path,source,target);
+    Dijkstra::CompareAlgorithms(V,E,source,target,distance,previous,path);
 
     return 0;
 }
