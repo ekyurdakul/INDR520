@@ -109,12 +109,22 @@ void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& pr
 void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, const vector<vector<float>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
 {
     cout << "Original Algorithm:" << endl;
+    auto originalSTime = high_resolution_clock::now();
     OriginalAlgorithm(V,E,source,distance,previous);
+    auto originalETime = high_resolution_clock::now();
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
     cout << "*******************" << endl;
     cout << "Modified Algorithm:" << endl;
+    auto modifiedSTime = high_resolution_clock::now();
     ModifiedAlgorithm(V,E,source,distance,previous);
+    auto modifiedETime = high_resolution_clock::now();
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
+    cout << "*******************" << endl;
+    auto originalDuration = originalETime - originalSTime;
+    auto modifiedDuration = modifiedETime - modifiedSTime;
+    auto originalms = duration_cast<milliseconds>(originalDuration).count();
+    auto modifiedms = duration_cast<milliseconds>(modifiedDuration).count();
+    cout << "Original: " << originalms << " ms" << endl << "Modified: " << modifiedms << " ms" << endl;
 }
