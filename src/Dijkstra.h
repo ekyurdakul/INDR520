@@ -5,6 +5,7 @@
 #include <queue>
 #include <chrono>
 #include <math.h>
+#include <numeric>
 using namespace std;
 using namespace chrono;
 
