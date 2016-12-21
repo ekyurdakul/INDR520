@@ -1,6 +1,6 @@
 #include "Dijkstra.h"
 
-void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous)
+void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous, duration<double> &time)
 {
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
@@ -10,6 +10,8 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
         vertexSet.push_back(item);
     
     distance[source] = 0.0f;
+
+    auto startTime = high_resolution_clock::now();
     
     while (!vertexSet.empty())
     {
@@ -27,6 +29,9 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
                 minDistVertex = currentVertex;
             }
         }
+        if (minDistVertex == -1)
+            break;
+
         vertexSet.erase(vertexSet.begin()+minDistIndex);
 
         for (unsigned int i = 0; i < E[minDistVertex].size(); i++)
@@ -39,9 +44,11 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
             }  
         }
     }
+    auto endTime = high_resolution_clock::now();
+    time = endTime - startTime;
 }
 
-void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous)
+void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous, duration<double> &time)
 {
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
@@ -51,6 +58,8 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
     
     for (auto& item : V)
         vertexSet.push(make_pair(item,distance[item]));
+
+    auto startTime = high_resolution_clock::now();
  
     while (!vertexSet.empty())
     {
@@ -63,7 +72,12 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
             if (item == v)
                 continue;
 
-            float newDist = distance[v] + E[v][item];
+            float newDist = distance[v];
+            if (item >= E[v].size())
+                newDist += INFINITY;
+            else
+                newDist += E[v][item];
+
             if (newDist < distance[item])
             {
                 distance[item] = newDist;
@@ -71,7 +85,10 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
                 vertexSet.push(make_pair(item,newDist)); 
             }
         }
-    }    
+    }
+
+    auto endTime = high_resolution_clock::now();
+    time = endTime - startTime;
 }
 
 void Dijkstra::FindPath(const vector<float>& distance, const vector<int>& previous, const unsigned int& target, list<unsigned int>& path)
@@ -108,23 +125,16 @@ void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& pr
 
 void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, const vector<vector<float>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
 {
+    duration<double> originalTime, modifiedTime;
     cout << "Original Algorithm:" << endl;
-    auto originalSTime = high_resolution_clock::now();
-    OriginalAlgorithm(V,E,source,distance,previous);
-    auto originalETime = high_resolution_clock::now();
+    OriginalAlgorithm(V,E,source,distance,previous,originalTime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
     cout << "*******************" << endl;
     cout << "Modified Algorithm:" << endl;
-    auto modifiedSTime = high_resolution_clock::now();
-    ModifiedAlgorithm(V,E,source,distance,previous);
-    auto modifiedETime = high_resolution_clock::now();
+    ModifiedAlgorithm(V,E,source,distance,previous,modifiedTime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
     cout << "*******************" << endl;
-    auto originalDuration = originalETime - originalSTime;
-    auto modifiedDuration = modifiedETime - modifiedSTime;
-    auto originalms = duration_cast<milliseconds>(originalDuration).count();
-    auto modifiedms = duration_cast<milliseconds>(modifiedDuration).count();
-    cout << "Original: " << originalms << " ms" << endl << "Modified: " << modifiedms << " ms" << endl;
+    cout << "Original: " << originalTime.count() << " s" << endl << "Modified: " << modifiedTime.count() << " s" << endl;
 }
