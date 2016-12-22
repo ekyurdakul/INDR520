@@ -82,7 +82,7 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
             {
                 distance[item] = newDist;
                 previous[item] = v;
-                vertexSet.push(make_pair(item,newDist)); 
+                vertexSet.push(make_pair(item,newDist));
             }
         }
     }

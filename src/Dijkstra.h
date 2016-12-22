@@ -4,7 +4,7 @@
 #include <list>
 #include <queue>
 #include <chrono>
-#include <math.h>
+#include <cmath>
 #include <numeric>
 #include <random>
 using namespace std;
