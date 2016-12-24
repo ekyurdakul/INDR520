@@ -125,18 +125,17 @@ void Dijkstra::PrintResults(const vector<float> &distance, const vector<int> &pr
     cout << endl;
 }
 
-void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
+void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path, duration<double> &otime, duration<double> &mtime)
 {
-    duration<double> originalTime, modifiedTime;
     cout << "Original Algorithm:" << endl;
-    OriginalAlgorithm(V,E,source,distance,previous,originalTime);
+    OriginalAlgorithm(V,E,source,distance,previous,otime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
     cout << "*******************" << endl;
     cout << "Modified Algorithm:" << endl;
-    ModifiedAlgorithm(V,E,source,distance,previous,modifiedTime);
+    ModifiedAlgorithm(V,E,source,distance,previous,mtime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
     cout << "*******************" << endl;
-    cout << "Original: " << originalTime.count() << " s" << endl << "Modified: " << modifiedTime.count() << " s" << endl;
+    cout << "Original: " << otime.count() << " s" << endl << "Modified: " << mtime.count() << " s" << endl;
 }
