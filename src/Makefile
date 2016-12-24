@@ -1,16 +1,22 @@
+CFLAGS = -std=c++14 -O3 -Wall
 OBJECTS = Dijkstra.o main.o
 EXEC = main
 
 all: $(EXEC)
 
+debug: CFLAGS += -g -DDEBUG
+debug: all
+
 run:
 	-./main
 
 %.o: %.cpp
-	g++ -std=c++14 -Wall -O3 -c -o $@ $^
+	g++ $(CFLAGS) -c -o $@ $^
 
 $(EXEC): $(OBJECTS)
-	g++ -std=c++14 -Wall -O3 -o $@ $^
+	g++ $(CFLAGS) -o $@ $^
 
 clean:
 	-rm *.o $(EXEC)
+
+.PHONY: clean run debug all
