@@ -2,7 +2,7 @@
 
 void TestCorrectness();
 void TestRandomGraphs();
-
+    
 int main()
 {
     TestCorrectness();
@@ -15,11 +15,12 @@ void TestCorrectness()
 {
     //Inputs
     const vector<unsigned int> V = {0,1,2};
-    const vector<vector<float>> E =
+    vector<vector<tuple<unsigned int,float>>> E =
     {
-        {0.0f,5.0f,INFINITY},
-        {INFINITY,0.0f,8.0f},
-        {INFINITY,INFINITY,0.0f},
+        //Source,Target,Weight
+        {make_tuple(1,5.0)},
+        {make_tuple(2,8.0)},
+        {}
     };
     const unsigned int source = 0;
     const unsigned int target = 2;
@@ -42,25 +43,31 @@ void TestRandomGraphs()
     {
         vector<unsigned int> V(N);
         iota(V.begin(),V.end(),0);
-        vector<vector<float>> E(N);
+
+        vector<vector<tuple<unsigned int,float>>> E(N);
         const unsigned int source = 0;
-        const unsigned int target = N-1;
+        int target = -1;
         unsigned int edges = 0;
 
         vector<float> distance;
         vector<int> previous;
         list<unsigned int> path;
 
+        //Nodes
         for (unsigned int i = 0; i < N; i++)
         {
-            uniform_int_distribution<int> edgeDist(0,1);
+            uniform_int_distribution<int> edgeDist(1,2);
+            uniform_int_distribution<int> edgeIndexDist(0,N-1);
             const unsigned int edgeCount = edgeDist(gen);
-            for (unsigned int j = 0; j < N; j++)
+            //Generate random edges
+            for (unsigned int j = 0; j < edgeCount; j++)
             {
-                if (i == j)
-                    E[i].push_back(0.0f);
-                else
-                    E[i].push_back(weightDist(gen));
+                const unsigned int destNode = edgeIndexDist(gen);
+                const float weight = weightDist(gen);
+                E[i].push_back(make_pair(destNode,weight));
+
+                if (edgeDist(gen) == 1 || target == -1)
+                    target = destNode;
             }
             edges += edgeCount;
         }

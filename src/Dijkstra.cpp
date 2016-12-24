@@ -1,6 +1,6 @@
 #include "Dijkstra.h"
 
-void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous, duration<double> &time)
+void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
@@ -17,7 +17,7 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
     {
         float minDistance = INFINITY;
         int minDistIndex = -1;
-        int minDistVertex = -1;
+        unsigned int minDistVertex = 0;
         
         for (unsigned int i = 0; i < vertexSet.size(); i++)
         {
@@ -29,14 +29,18 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
                 minDistVertex = currentVertex;
             }
         }
-        if (minDistVertex == -1)
+        if (minDistance == INFINITY)
             break;
 
         vertexSet.erase(vertexSet.begin()+minDistIndex);
 
-        for (unsigned int i = 0; i < E[minDistVertex].size(); i++)
+        if (minDistVertex > E.size()-1)
+            continue;
+
+        for (auto& edge : E[minDistVertex])
         {
-            float newDist = distance[minDistVertex] + E[minDistVertex][i];
+            float newDist = distance[minDistVertex] + get<1>(edge);
+            const unsigned int i = get<0>(edge);
             if (newDist < distance[i])
             {
                 distance[i] = newDist;
@@ -48,7 +52,7 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int>& V, const vector<vec
     time = endTime - startTime;
 }
 
-void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vector<float>>& E, const unsigned int& source, vector<float>& distance, vector<int>& previous, duration<double> &time)
+void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
@@ -67,22 +71,18 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
         unsigned int v = get<0>(vertex);
         vertexSet.pop();
 
-        for (auto& item : V)
+        if (v > E.size()-1)
+            continue;
+
+        for (auto& edge : E[v])
         {
-            if (item == v)
-                continue;
-
-            float newDist = distance[v];
-            if (item >= E[v].size())
-                newDist += INFINITY;
-            else
-                newDist += E[v][item];
-
-            if (newDist < distance[item])
+            float newDist = distance[v] + get<1>(edge);
+            const unsigned int i = get<0>(edge);
+            if (newDist < distance[i])
             {
-                distance[item] = newDist;
-                previous[item] = v;
-                vertexSet.push(make_pair(item,newDist));
+                distance[i] = newDist;
+                previous[i] = v;
+                vertexSet.push(make_pair(i,newDist));
             }
         }
     }
@@ -91,7 +91,7 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int>& V, const vector<vec
     time = endTime - startTime;
 }
 
-void Dijkstra::FindPath(const vector<float>& distance, const vector<int>& previous, const unsigned int& target, list<unsigned int>& path)
+void Dijkstra::FindPath(const vector<float> &distance, const vector<int> &previous, const unsigned int &target, list<unsigned int> &path)
 {
     path = {};
 
@@ -104,7 +104,7 @@ void Dijkstra::FindPath(const vector<float>& distance, const vector<int>& previo
     path.push_front(currentTarget);
 }
 
-void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& previous, const list<unsigned int>& path, const unsigned int& source, const unsigned int& target)
+void Dijkstra::PrintResults(const vector<float> &distance, const vector<int> &previous, const list<unsigned int> &path, const unsigned int &source, const unsigned int &target)
 {
     /*
     cout << "Distance: ";
@@ -125,7 +125,7 @@ void Dijkstra::PrintResults(const vector<float>& distance, const vector<int>& pr
     cout << endl;
 }
 
-void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, const vector<vector<float>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
+void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path)
 {
     duration<double> originalTime, modifiedTime;
     cout << "Original Algorithm:" << endl;
