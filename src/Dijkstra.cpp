@@ -2,16 +2,16 @@
 
 void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
+    auto startTime = high_resolution_clock::now();
+
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
     vector<unsigned int> vertexSet = {};
-    
+
     for (auto& item : V)
         vertexSet.push_back(item);
     
     distance[source] = 0.0f;
-
-    auto startTime = high_resolution_clock::now();
     
     while (!vertexSet.empty())
     {
@@ -54,6 +54,8 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tu
 
 void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
+    auto startTime = high_resolution_clock::now();
+    
     distance = vector<float>(V.size(),INFINITY);
     previous = vector<int>(V.size(),-1);
     priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;
@@ -62,8 +64,6 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tu
     
     for (auto& item : V)
         vertexSet.push(make_pair(item,distance[item]));
-
-    auto startTime = high_resolution_clock::now();
  
     while (!vertexSet.empty())
     {
