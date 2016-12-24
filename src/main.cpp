@@ -39,7 +39,7 @@ void TestRandomGraphs()
     mt19937 gen(rd());
     uniform_real_distribution<float> weightDist(0,100);
 
-    for (unsigned int N = 1000; N <= 1000; N+=100)
+    for (unsigned int N = 1000; N <= 100000; N+=1000)
     {
         vector<unsigned int> V(N);
         iota(V.begin(),V.end(),0);
