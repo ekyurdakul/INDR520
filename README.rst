@@ -5,11 +5,19 @@ Performance wise comparison of Dijkstra's original and modified algorithms on th
 
 Index
 -----
+- `Algorithms`_
 - `Builds`_
 - `Build Debug`_
 - `Build Release`_
 - `Run`_
 - `Performance`_
+
+Algorithms
+----------
+- Original
+    Runs in O(V^2).
+- Modified
+    Runs in O(ElogV + VlogV)
 
 Builds
 ------
