@@ -3,48 +3,50 @@
 void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     auto startTime = high_resolution_clock::now();
-
-    distance = vector<float>(V.size(),INFINITY);
-    previous = vector<int>(V.size(),-1);
-    vector<unsigned int> vertexSet = {};
-
-    for (auto& item : V)
-        vertexSet.push_back(item);
-    
-    distance[source] = 0.0f;
-    
-    while (!vertexSet.empty())
+    //O(V)
+    distance = vector<float>(V.size(),INFINITY);//O(V)
+    previous = vector<int>(V.size(),-1);//O(V)
+    vector<unsigned int> vertexSet = {};//O(1)
+    //O(V)
+    for (auto& item : V)//O(1*V)
+        vertexSet.push_back(item);//O(1)
+    //O(1)
+    distance[source] = 0.0f;//O(1)
+    //O(V^2)
+    while (!vertexSet.empty())//O(V*V)
     {
-        float minDistance = INFINITY;
-        int minDistIndex = -1;
-        unsigned int minDistVertex = 0;
-        
-        for (unsigned int i = 0; i < vertexSet.size(); i++)
+        //O(1)
+        float minDistance = INFINITY;//O(1)
+        int minDistIndex = -1;//O(1)
+        unsigned int minDistVertex = 0;//O(1)
+        //O(V)
+        for (unsigned int i = 0; i < vertexSet.size(); i++)//O(1*V)
         {
-            unsigned int currentVertex = vertexSet[i];
-            if (distance[currentVertex] < minDistance || vertexSet.size() == 1)
+            unsigned int currentVertex = vertexSet[i];//O(1)
+            if (distance[currentVertex] < minDistance || vertexSet.size() == 1)//O(1)
             {
-                minDistance = distance[currentVertex];
-                minDistIndex = i;
-                minDistVertex = currentVertex;
+                minDistance = distance[currentVertex];//O(1)
+                minDistIndex = i;//O(1)
+                minDistVertex = currentVertex;//O(1)
             }
         }
-        if (minDistance == INFINITY)
+        //O(1)
+        if (minDistance == INFINITY)//O(1)
             break;
-
-        vertexSet.erase(vertexSet.begin()+minDistIndex);
-
-        if (minDistVertex > E.size()-1)
+        //O(V)
+        vertexSet.erase(vertexSet.begin()+minDistIndex);//O(V)
+        //O(1)
+        if (minDistVertex > E.size()-1)//O(1)
             continue;
-
-        for (auto& edge : E[minDistVertex])
+        //O(V)
+        for (auto& edge : E[minDistVertex])//O(1*V)
         {
-            float newDist = distance[minDistVertex] + get<1>(edge);
-            const unsigned int i = get<0>(edge);
-            if (newDist < distance[i])
+            float newDist = distance[minDistVertex] + get<1>(edge);//O(1)
+            const unsigned int i = get<0>(edge);//O(1)
+            if (newDist < distance[i])//O(1)
             {
-                distance[i] = newDist;
-                previous[i] = minDistVertex; 
+                distance[i] = newDist;//O(1)
+                previous[i] = minDistVertex;//O(1)
             }  
         }
     }
