@@ -57,38 +57,37 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tu
 void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     auto startTime = high_resolution_clock::now();
-    
-    distance = vector<float>(V.size(),INFINITY);
-    previous = vector<int>(V.size(),-1);
-    priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;
-
-    distance[source] = 0.0f;
-    
-    for (auto& item : V)
-        vertexSet.push(make_pair(item,distance[item]));
- 
-    while (!vertexSet.empty())
+    //O(V)
+    distance = vector<float>(V.size(),INFINITY);//O(V)
+    previous = vector<int>(V.size(),-1);//O(V)
+    priority_queue<pair<unsigned int,float>, vector<pair<unsigned int,float>>, greater<pair<unsigned int,float>>> vertexSet;//O(1)
+    distance[source] = 0.0f;//O(1)
+    //O(VlogV)
+    for (auto& item : V)//O(logV*V)
+        vertexSet.push(make_pair(item,distance[item]));//O(logV)
+    //O(ElogV)
+    while (!vertexSet.empty())//O(VlogV * V)
     {
-        auto& vertex = vertexSet.top();
-        unsigned int v = get<0>(vertex);
-        vertexSet.pop();
-
-        if (v > E.size()-1)
+        //O(logV)
+        auto& vertex = vertexSet.top();//O(1)
+        unsigned int v = get<0>(vertex);//O(1)
+        vertexSet.pop();//O(logV)
+        //O(1)
+        if (v > E.size()-1)//O(1)
             continue;
-
-        for (auto& edge : E[v])
+        //O(VlogV)
+        for (auto& edge : E[v])//O(logV*V)
         {
-            float newDist = distance[v] + get<1>(edge);
-            const unsigned int i = get<0>(edge);
-            if (newDist < distance[i])
+            float newDist = distance[v] + get<1>(edge);//O(1)
+            const unsigned int i = get<0>(edge);//O(1)
+            if (newDist < distance[i])//O(1)
             {
-                distance[i] = newDist;
-                previous[i] = v;
-                vertexSet.push(make_pair(i,newDist));
+                distance[i] = newDist;//O(1)
+                previous[i] = v;//O(1)
+                vertexSet.push(make_pair(i,newDist));//O(logV)
             }
         }
     }
-
     auto endTime = high_resolution_clock::now();
     time = endTime - startTime;
 }
