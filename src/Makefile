@@ -8,7 +8,7 @@ debug: CFLAGS += -g -DDEBUG
 debug: all
 
 run:
-	-./main
+	-./$(EXEC)
 
 %.o: %.cpp
 	g++ $(CFLAGS) -c -o $@ $^
