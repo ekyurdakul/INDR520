@@ -54,7 +54,7 @@ void Dijkstra::OriginalAlgorithm(const vector<unsigned int> &V, vector<vector<tu
     time = endTime - startTime;
 }
 
-void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
+void Dijkstra::PriorityQueueAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     auto startTime = high_resolution_clock::now();
     //O(V)
@@ -85,6 +85,49 @@ void Dijkstra::ModifiedAlgorithm(const vector<unsigned int> &V, vector<vector<tu
                 distance[i] = newDist;//O(1)
                 previous[i] = v;//O(1)
                 vertexSet.push(make_pair(i,newDist));//O(logV)
+            }
+        }
+    }
+    auto endTime = high_resolution_clock::now();
+    time = endTime - startTime;
+}
+
+void Dijkstra::FibonacciHeapAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
+{
+    auto startTime = high_resolution_clock::now();
+
+    distance = vector<float>(V.size(),INFINITY);
+    previous = vector<int>(V.size(),-1);
+    boost::heap::fibonacci_heap<fheap> vertexSet;
+    vector<boost::heap::fibonacci_heap<fheap>::handle_type> handles;
+    distance[source] = 0.0f;
+    
+    for (auto& item : V)
+    {
+        auto h = vertexSet.push(fheap(item,distance[item]));
+        vertexSet.increase(h);
+        handles.push_back(h);
+    }
+    
+    while (!vertexSet.empty())
+    {
+        auto& vertex = vertexSet.top();
+        unsigned int v = vertex.edge;
+        vertexSet.pop();
+        
+        if (v > E.size()-1)
+            continue;
+        
+        for (auto& edge : E[v])
+        {
+            float newDist = distance[v] + get<1>(edge);
+            const unsigned int i = get<0>(edge);
+            if (newDist < distance[i])
+            {
+                distance[i] = newDist;
+                previous[i] = v;
+                (*handles[i]).weight = newDist;
+                vertexSet.increase(handles[i]);
             }
         }
     }
@@ -126,17 +169,22 @@ void Dijkstra::PrintResults(const vector<float> &distance, const vector<int> &pr
     cout << endl;
 }
 
-void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path, duration<double> &otime, duration<double> &mtime)
+void Dijkstra::CompareAlgorithms(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, const unsigned int &target, vector<float> &distance, vector<int> &previous, list<unsigned int> &path, duration<double> &otime, duration<double> &ptime, duration<double> &ftime)
 {
     cout << "Original Algorithm:" << endl;
     OriginalAlgorithm(V,E,source,distance,previous,otime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
-    cout << "*******************" << endl;
-    cout << "Modified Algorithm:" << endl;
-    ModifiedAlgorithm(V,E,source,distance,previous,mtime);
+    cout << "*************************" << endl;
+    cout << "Priority Queue Algorithm:" << endl;
+    PriorityQueueAlgorithm(V,E,source,distance,previous,ptime);
     FindPath(distance,previous,target,path);
     PrintResults(distance,previous,path,source,target);
-    cout << "*******************" << endl;
-    cout << "Original: " << otime.count() << " s" << endl << "Modified: " << mtime.count() << " s" << endl;
+    cout << "*************************" << endl;
+    cout << "Fibonacci Heap Algorithm:" << endl;
+    FibonacciHeapAlgorithm(V,E,source,distance,previous,ftime);
+    FindPath(distance,previous,target,path);
+    PrintResults(distance,previous,path,source,target);
+    cout << "*************************" << endl;
+    cout << "Original: \t" << otime.count() << " s" << endl << "Priority Queue: " << ptime.count() << " s" << endl << "Fibonacci Heap: " << ftime.count() << " s" << endl;
 }
