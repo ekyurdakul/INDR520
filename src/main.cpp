@@ -41,7 +41,7 @@ void TestRandomGraphs()
     uniform_real_distribution<float> weightDist(0,100);
     vector<tuple<string,duration<double>,duration<double>,duration<double>>> sparseTimes = {};
     vector<tuple<string,duration<double>,duration<double>,duration<double>>> denseTimes = {};
-    for (unsigned int N = 1000; N <= 100000; N+=1000)
+    for (unsigned int N = 5000; N <= 50000; N+=5000)
     {
         for (int sparseGraph = 1; sparseGraph >= 0; sparseGraph--)
         {
