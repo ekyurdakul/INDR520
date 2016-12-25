@@ -19,6 +19,8 @@ Algorithms
 - Priority Queue
     Runs in O(ElogV + VlogV).
 - Fibonacci Heap
+    Runs in O(E + VlogV).
+
 
 Builds
 ------
@@ -63,3 +65,7 @@ Nodes   Edges   Original   Modified    Speedup
 ======= ======= ========== =========== =======
 
 ======= ======= ========== =========== =======
+
+References
+----------
+.. [#] http://www.boost.org/doc/libs/1_49_0/doc/html/boost/heap/fibonacci_heap.html
