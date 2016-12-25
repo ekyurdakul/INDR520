@@ -11,6 +11,7 @@ Index
 - `Build Release`_
 - `Run`_
 - `Performance`_
+- `Output`_
 
 Algorithms
 ----------
@@ -20,7 +21,6 @@ Algorithms
     Time complexity :math:`O(ElogV + VlogV)`.
 - Fibonacci Heap
     Time complexity :math:`O(E + VlogV)`.
-
 
 Builds
 ------
@@ -58,7 +58,6 @@ Execute in terminal:
 
 Performance
 -----------
-
 ======= ========= ========== =========== ============
    Sparse Graphs   Algorithm Execution Time (seconds)
 ----------------- -----------------------------------
@@ -92,6 +91,10 @@ Nodes   Edges     Original   Priority Q. Fibonacci H.
 45000	506352340 2.03314000 35.35780000 0.77981400
 50000	628455174 2.52489000 43.11340000 0.99360200
 ======= ========= ========== =========== ============
+
+Output
+------
+A sample output is in **src/output.txt**
 
 References
 ----------
