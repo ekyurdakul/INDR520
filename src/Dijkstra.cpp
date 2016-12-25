@@ -95,39 +95,41 @@ void Dijkstra::PriorityQueueAlgorithm(const vector<unsigned int> &V, vector<vect
 void Dijkstra::FibonacciHeapAlgorithm(const vector<unsigned int> &V, vector<vector<tuple<unsigned int,float>>> &E, const unsigned int &source, vector<float> &distance, vector<int> &previous, duration<double> &time)
 {
     auto startTime = high_resolution_clock::now();
-
-    distance = vector<float>(V.size(),INFINITY);
-    previous = vector<int>(V.size(),-1);
-    boost::heap::fibonacci_heap<fheap> vertexSet;
-    vector<boost::heap::fibonacci_heap<fheap>::handle_type> handles;
-    distance[source] = 0.0f;
-    
-    for (auto& item : V)
+    //O(V)
+    distance = vector<float>(V.size(),INFINITY);//O(V)
+    previous = vector<int>(V.size(),-1);//O(V)
+    boost::heap::fibonacci_heap<fheap> vertexSet;//O(1)
+    vector<boost::heap::fibonacci_heap<fheap>::handle_type> handles;//O(1)
+    distance[source] = 0.0f;//O(1)
+    //O(V)
+    for (auto& item : V)//O(1*V)
     {
-        auto h = vertexSet.push(fheap(item,distance[item]));
-        vertexSet.increase(h);
-        handles.push_back(h);
+        auto h = vertexSet.push(fheap(item,distance[item]));//O(1)
+        vertexSet.increase(h);//O(1)
+        handles.push_back(h);//O(1)
     }
-    
+    //O(E + VlogV)
     while (!vertexSet.empty())
     {
-        auto& vertex = vertexSet.top();
-        unsigned int v = vertex.edge;
-        vertexSet.pop();
-        
-        if (v > E.size()-1)
+        //O(logV)
+        auto& vertex = vertexSet.top();//O(1)
+        unsigned int v = vertex.edge;//O(1)
+        vertexSet.pop();//O(logV)
+        //O(1)
+        if (v > E.size()-1)//O(1)
             continue;
-        
+        //O(E)
         for (auto& edge : E[v])
         {
-            float newDist = distance[v] + get<1>(edge);
-            const unsigned int i = get<0>(edge);
-            if (newDist < distance[i])
+            //O(1)
+            float newDist = distance[v] + get<1>(edge);//O(1)
+            const unsigned int i = get<0>(edge);//O(1)
+            if (newDist < distance[i])//O(1)
             {
-                distance[i] = newDist;
-                previous[i] = v;
-                (*handles[i]).weight = newDist;
-                vertexSet.increase(handles[i]);
+                distance[i] = newDist;//O(1)
+                previous[i] = v;//O(1)
+                (*handles[i]).weight = newDist;//O(1)
+                vertexSet.increase(handles[i]);//O(1)
             }
         }
     }
