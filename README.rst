@@ -12,6 +12,7 @@ Index
 - `Run`_
 - `Performance`_
 - `Output`_
+- `References`_
 
 Algorithms
 ----------
