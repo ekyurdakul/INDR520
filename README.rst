@@ -17,11 +17,11 @@ Index
 Algorithms
 ----------
 - Original
-    Time complexity :math:`O(V^2)`.
+    Time complexity :math:`O(V^2)`
 - Priority Queue
-    Time complexity :math:`O(ElogV + VlogV)`.
+    Time complexity :math:`O(ElogV + VlogV)`
 - Fibonacci Heap
-    Time complexity :math:`O(E + VlogV)`.
+    Time complexity :math:`O(E + VlogV)`
 
 Builds
 ------
